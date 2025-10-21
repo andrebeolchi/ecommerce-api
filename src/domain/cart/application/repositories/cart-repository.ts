@@ -7,8 +7,6 @@ interface CreateCartParams {
   userId: User['id']
   productId: Product['id']
   quantity: CartItem['quantity']
-  price: CartItem['price']
-  name: CartItem['name']
 }
 
 interface UpdateCartParams {
@@ -22,10 +20,11 @@ interface FindCartByUserIdAndProductIdParams {
 }
 
 export interface CartRepository {
-  createCart(params: CreateCartParams): Promise<void>
+  createCart(id: User['id']): Promise<Cart>
   findCartByUserId(userId: User['id']): Promise<Cart | null>
 
-  removeCartItem(cartItemId: CartItem['id']): Promise<CartItem>
+  createCartItem(params: CreateCartParams): Promise<CartItem>
   updateCartItem(params: UpdateCartParams): Promise<CartItem>
+  removeCartItem(cartItemId: CartItem['id']): Promise<void>
   findCartItemByUserIdAndProductId(params: FindCartByUserIdAndProductIdParams): Promise<CartItem | null>
 }
