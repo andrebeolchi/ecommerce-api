@@ -12,7 +12,7 @@ const config: Config = {
   collectCoverage: true,
   verbose: true,
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: ['/node_modules'],
+  coveragePathIgnorePatterns: ['/node_modules', 'mock'],
   coverageProvider: 'v8',
   moduleDirectories: ['node_modules', 'src'],
   moduleNameMapper: {
