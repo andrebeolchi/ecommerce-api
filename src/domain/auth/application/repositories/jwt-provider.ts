@@ -1,4 +1,4 @@
 export interface JwtProvider {
-  generateToken(payload: Record<string, unknown>): string
-  verifyToken(token: string): Record<string, unknown> | null
+  generateToken(payload: Record<string, unknown>): Promise<string>
+  verifyToken<T>(token: string): Promise<T | null>
 }

@@ -35,7 +35,7 @@ export class LoginUseCase {
         throw new Error('invalid credentials')
       }
 
-      const token = this.jwtProvider.generateToken({ userId: user.id, email: user.email })
+      const token = await this.jwtProvider.generateToken({ userId: user.id, email: user.email })
 
       this.logger.info('user logged in successfully', { userId: user.id })
 

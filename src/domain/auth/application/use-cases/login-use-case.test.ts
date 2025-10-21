@@ -31,11 +31,11 @@ describe('[use-case] login user', () => {
 
     userRepository.findByEmail.mockResolvedValueOnce(user)
     passwordHasher.compare.mockResolvedValueOnce(true)
-    jwtProvider.generateToken.mockReturnValueOnce('valid-jwt-token')
+    jwtProvider.generateToken.mockResolvedValueOnce('valid-jwt-token')
 
-    const result = loginUseCase.execute({ email: user.email, password: user.password })
+    const result = await loginUseCase.execute({ email: user.email, password: user.password })
 
-    await expect(result).resolves.toEqual({ token: 'valid-jwt-token' })
+    expect(result).toStrictEqual({ token: 'valid-jwt-token' })
   })
 
   it('should throw error if user not found', async () => {
