@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>60/60</span>
+                <span class='fraction'>59/59</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>60/60</span>
+                <span class='fraction'>59/59</span>
             </div>
         
             
@@ -122,13 +122,7 @@
 <a name='L57'></a><a href='#L57'>57</a>
 <a name='L58'></a><a href='#L58'>58</a>
 <a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a>
-<a name='L61'></a><a href='#L61'>61</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L60'></a><a href='#L60'>60</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -146,6 +140,9 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
@@ -183,6 +180,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { NotFoundError } from '~/domain/commons/errors/not-found'
 &nbsp;
 import { CartRepository } from '~/domain/cart/application/repositories/cart-repository'
@@ -196,52 +194,51 @@ interface CreateCartUseCaseInput {
   quantity: number
 }
 &nbsp;
-interface CreateCartUseCaseDependencies {
-  logger: Logger
-  cartRepository: CartRepository
-  productRepository: ProductRepository
-}
+export class CreateCartUseCase {
+  constructor(
+    private logger: Logger,
+    private cartRepository: CartRepository,
+    private productRepository: ProductRepository
+  ) {}
 &nbsp;
-export const createCartUseCase = async (
-  input: CreateCartUseCaseInput,
-  { logger, cartRepository, productRepository }: CreateCartUseCaseDependencies
-) =&gt; {
-  const product = await productRepository.findById(input.productId)
+  async execute(input: CreateCartUseCaseInput) {
+    const product = await this.productRepository.findById(input.productId)
 &nbsp;
-  if (!product) {
-    logger.error('product not found', { productId: input.productId })
-    throw new NotFoundError('product not found')
-  }
+    if (!product) {
+      this.logger.error('product not found', { productId: input.productId })
+      throw new NotFoundError('product not found')
+    }
 &nbsp;
-  if (product.stock &lt; input.quantity) {
-    logger.error('insufficient stock for product', {
+    if (product.stock &lt; input.quantity) {
+      this.logger.error('insufficient stock for product', {
+        productId: input.productId,
+        requestedQuantity: input.quantity,
+        availableStock: product.stock,
+      })
+      throw new Error('insufficient stock for product')
+    }
+&nbsp;
+    const cartItem = await this.cartRepository.findCartItemByUserIdAndProductId({
+      userId: input.userId,
       productId: input.productId,
-      requestedQuantity: input.quantity,
-      availableStock: product.stock,
     })
-    throw new Error('insufficient stock for product')
-  }
 &nbsp;
-  const cartItem = await cartRepository.findCartItemByUserIdAndProductId({
-    userId: input.userId,
-    productId: input.productId,
-  })
+    if (cartItem) {
+      await this.cartRepository.updateCartItem({
+        cartItemId: cartItem.id,
+        quantity: cartItem.quantity + input.quantity,
+      })
+      return
+    }
 &nbsp;
-  if (cartItem) {
-    await cartRepository.updateCartItem({
-      cartItemId: cartItem.id,
-      quantity: cartItem.quantity + input.quantity,
+    await this.cartRepository.createCart({
+      userId: input.userId,
+      productId: input.productId,
+      quantity: input.quantity,
+      name: product.name,
+      price: product.price,
     })
-    return
   }
-&nbsp;
-  await cartRepository.createCart({
-    userId: input.userId,
-    productId: input.productId,
-    quantity: input.quantity,
-    name: product.name,
-    price: product.price,
-  })
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -250,7 +247,7 @@ export const createCartUseCase = async (
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-21T18:10:04.230Z
+                at 2025-10-21T19:30:43.838Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

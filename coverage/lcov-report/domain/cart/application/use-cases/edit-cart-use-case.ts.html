@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>83/83</span>
+                <span class='fraction'>82/82</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>83/83</span>
+                <span class='fraction'>82/82</span>
             </div>
         
             
@@ -145,13 +145,7 @@
 <a name='L80'></a><a href='#L80'>80</a>
 <a name='L81'></a><a href='#L81'>81</a>
 <a name='L82'></a><a href='#L82'>82</a>
-<a name='L83'></a><a href='#L83'>83</a>
-<a name='L84'></a><a href='#L84'>84</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L83'></a><a href='#L83'>83</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -170,6 +164,9 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
@@ -229,6 +226,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { NotFoundError } from '~/domain/commons/errors/not-found'
 import { ValidationError } from '~/domain/commons/errors/validation'
 &nbsp;
@@ -243,74 +241,73 @@ interface EditCartUseCaseInput {
   quantity: number
 }
 &nbsp;
-interface EditCartUseCaseDependencies {
-  logger: Logger
-  cartRepository: CartRepository
-  productRepository: ProductRepository
-}
+export class EditCartUseCase {
+  constructor(
+    private logger: Logger,
+    private cartRepository: CartRepository,
+    private productRepository: ProductRepository
+  ) {}
 &nbsp;
-export const editCartUseCase = async (
-  input: EditCartUseCaseInput,
-  { logger, cartRepository, productRepository }: EditCartUseCaseDependencies
-) =&gt; {
-  const cart = await cartRepository.findCartByUserId(input.userId)
+  async execute(input: EditCartUseCaseInput) {
+    const cart = await this.cartRepository.findCartByUserId(input.userId)
 &nbsp;
-  if (!cart) {
-    logger.warn('cart not found', { userId: input.userId })
-    throw new NotFoundError('cart not found')
-  }
+    if (!cart) {
+      this.logger.warn('cart not found', { userId: input.userId })
+      throw new NotFoundError('cart not found')
+    }
 &nbsp;
-  const cartItem = cart.items.find(item =&gt; item.id === input.cartItemId)
+    const cartItem = cart.items.find(item =&gt; item.id === input.cartItemId)
 &nbsp;
-  if (!cartItem) {
-    logger.warn('cart item not found', { cartItemId: input.cartItemId })
-    throw new NotFoundError('cart item not found')
-  }
+    if (!cartItem) {
+      this.logger.warn('cart item not found', { cartItemId: input.cartItemId })
+      throw new NotFoundError('cart item not found')
+    }
 &nbsp;
-  const product = await productRepository.findById(cartItem.productId)
+    const product = await this.productRepository.findById(cartItem.productId)
 &nbsp;
-  if (!product) {
-    logger.error('product not found', { productId: cartItem.productId })
-    throw new NotFoundError('product not found')
-  }
+    if (!product) {
+      this.logger.error('product not found', { productId: cartItem.productId })
+      throw new NotFoundError('product not found')
+    }
 &nbsp;
-  if (product.stock &lt; input.quantity) {
-    logger.error('insufficient stock for product', {
-      productId: cartItem.productId,
-      requestedQuantity: input.quantity,
-      availableStock: product.stock,
+    if (product.stock &lt; input.quantity) {
+      this.logger.error('insufficient stock for product', {
+        productId: cartItem.productId,
+        requestedQuantity: input.quantity,
+        availableStock: product.stock,
+      })
+      throw new ValidationError('insufficient stock for product')
+    }
+&nbsp;
+    if (input.quantity &lt;= 0) {
+      this.logger.info('removing item from cart as quantity is zero', { cartItemId: input.cartItemId })
+      const removedCartItem = await this.cartRepository.removeCartItem(input.cartItemId)
+&nbsp;
+      this.logger.info('cart item removed successfully', {
+        userId: input.userId,
+        cartId: cart.id,
+        cartItemId: removedCartItem.id,
+        productId: removedCartItem.productId,
+      })
+&nbsp;
+      return null
+    }
+&nbsp;
+    const updatedCartItem = await this.cartRepository.updateCartItem({
+      cartItemId: input.cartItemId,
+      quantity: input.quantity,
     })
-    throw new ValidationError('insufficient stock for product')
-  }
 &nbsp;
-  if (input.quantity &lt;= 0) {
-    logger.info('removing item from cart as quantity is zero', { cartItemId: input.cartItemId })
-    const removedCartItem = await cartRepository.removeCartItem(input.cartItemId)
-&nbsp;
-    logger.info('cart item removed successfully', {
+    this.logger.info('cart updated successfully', {
       userId: input.userId,
-      cartId: cart.id,
-      cartItemId: removedCartItem.id,
-      productId: removedCartItem.productId,
+      cartId: updatedCartItem.id,
+      cartItemId: updatedCartItem.id,
+      productId: updatedCartItem.productId,
+      newQuantity: updatedCartItem.quantity,
     })
 &nbsp;
-    return null
+    return updatedCartItem
   }
-&nbsp;
-  const updatedCartItem = await cartRepository.updateCartItem({
-    cartItemId: input.cartItemId,
-    quantity: input.quantity,
-  })
-&nbsp;
-  logger.info('cart updated successfully', {
-    userId: input.userId,
-    cartId: updatedCartItem.id,
-    cartItemId: updatedCartItem.id,
-    productId: updatedCartItem.productId,
-    newQuantity: updatedCartItem.quantity,
-  })
-&nbsp;
-  return updatedCartItem
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -319,7 +316,7 @@ export const editCartUseCase = async (
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-21T18:10:04.230Z
+                at 2025-10-21T19:30:43.838Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
