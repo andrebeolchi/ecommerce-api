@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for domain/auth/application/use-cases/register-use-case.ts</title>
+    <title>Code coverage report for adapters/controllers/auth/register-controller.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../../prettify.css" />
-    <link rel="stylesheet" href="../../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../../favicon.png" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../../sort-arrow-sprite.png);
+            background-image: url(../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">domain/auth/application/use-cases</a> register-use-case.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">adapters/controllers/auth</a> register-controller.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">95.23% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>47/47</span>
+                <span class='fraction'>40/42</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">95.23% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>47/47</span>
+                <span class='fraction'>40/42</span>
             </div>
         
             
@@ -105,12 +105,7 @@
 <a name='L40'></a><a href='#L40'>40</a>
 <a name='L41'></a><a href='#L41'>41</a>
 <a name='L42'></a><a href='#L42'>42</a>
-<a name='L43'></a><a href='#L43'>43</a>
-<a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a>
-<a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L43'></a><a href='#L43'>43</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -124,18 +119,10 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -143,65 +130,63 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { User } from '~/domain/auth/entities/user'
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { RegisterUseCase } from '~/domain/auth/application/use-cases/register-use-case'
 &nbsp;
-import { PasswordHasher } from '~/domain/auth/application/repositories/password-hasher'
-import { UserRepository } from '~/domain/auth/application/repositories/user-repository'
+import { errorHandler } from '~/adapters/controllers/interfaces/error-handler'
+import { Request } from '~/adapters/controllers/interfaces/request'
+import { SchemaValidator } from '~/adapters/controllers/interfaces/schema-validator'
 &nbsp;
 import { Logger } from '~/infra/logger'
 &nbsp;
-interface RegisterInput {
+export interface Body {
   email: string
   password: string
 }
 &nbsp;
-export class RegisterUseCase {
+export class RegisterController {
   constructor(
     private logger: Logger,
-    private userRepository: UserRepository,
-    private passwordHasher: PasswordHasher
+    private registerUseCase: RegisterUseCase,
+    private schemaValidator: SchemaValidator&lt;Body&gt;
   ) {}
 &nbsp;
-  async execute(input: RegisterInput) {
+  async execute({ body }: Request&lt;Body&gt;) {
     try {
-      this.logger.info('registering new user', { email: input.email })
+      const { data, errors } = this.schemaValidator.execute(body!)
 &nbsp;
-      const existingUser = await this.userRepository.findByEmail(input.email)
-&nbsp;
-      if (existingUser) {
-        this.logger.warn('user already exists', { email: input.email })
-        throw new Error('user already exists')
+      if (errors.length) {
+        return {
+          status: 400,
+          body: errors,
+        }
       }
 &nbsp;
-      const hashedPassword = await this.passwordHasher.hash(input.password)
+      const result = await this.registerUseCase.execute({ email: data.email, password: data.password })
 &nbsp;
-      const user = User.create({
-        email: input.email,
-        password: hashedPassword,
-      })
-&nbsp;
-      const createdUser = await this.userRepository.create(user)
-&nbsp;
-      this.logger.info('user registered successfully', { userId: createdUser.id })
-      return createdUser
-    } catch (error) {
-      this.logger.error('error registering user', { error })
-      throw error
-    }
+      return {
+        status: 201,
+        body: result,
+      }
+    } <span class="branch-0 cbranch-no" title="branch not covered" >catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >      return errorHandler({ error, logger: this.logger })</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -213,14 +198,14 @@ export class RegisterUseCase {
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
                 at 2025-10-21T19:52:07.581Z
             </div>
-        <script src="../../../../prettify.js"></script>
+        <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../../sorter.js"></script>
-        <script src="../../../../block-navigation.js"></script>
+        <script src="../../../sorter.js"></script>
+        <script src="../../../block-navigation.js"></script>
     </body>
 </html>
     
