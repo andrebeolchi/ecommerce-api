@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker'
 import { Factory } from 'rosie'
 
 import { User } from '~/domain/auth/entities/user'
+import { Cart } from '~/domain/cart/entities/cart'
 import { CartItem } from '~/domain/cart/entities/cart-item'
 import { Product } from '~/domain/catalog/entities/product'
 
@@ -23,6 +24,14 @@ export const productFactory = new Factory<Product>().attrs({
   promotionalPrice: () => +faker.commerce.price({ min: 1, max: 800, dec: 2 }),
   promotionStartsAt: () => faker.date.past(),
   promotionEndsAt: () => faker.date.future(),
+  createdAt: () => faker.date.past(),
+  updatedAt: () => faker.date.recent(),
+})
+
+export const cartFactory = new Factory<Cart>().attrs({
+  id: () => faker.string.uuid(),
+  userId: () => faker.string.uuid(),
+  items: () => [],
   createdAt: () => faker.date.past(),
   updatedAt: () => faker.date.recent(),
 })

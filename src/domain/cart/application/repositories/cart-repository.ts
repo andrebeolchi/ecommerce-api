@@ -1,4 +1,5 @@
 import { User } from '~/domain/auth/entities/user'
+import { Cart } from '~/domain/cart/entities/cart'
 import { CartItem } from '~/domain/cart/entities/cart-item'
 import { Product } from '~/domain/catalog/entities/product'
 
@@ -22,7 +23,9 @@ interface FindCartByUserIdAndProductIdParams {
 
 export interface CartRepository {
   createCart(params: CreateCartParams): Promise<void>
-  findCartByUserId(userId: User['id']): Promise<CartItem[] | null>
-  updateCart(params: UpdateCartParams): Promise<CartItem>
-  findCartByUserIdAndProductId(params: FindCartByUserIdAndProductIdParams): Promise<CartItem | null>
+  findCartByUserId(userId: User['id']): Promise<Cart | null>
+
+  removeCartItem(cartItemId: CartItem['id']): Promise<CartItem>
+  updateCartItem(params: UpdateCartParams): Promise<CartItem>
+  findCartItemByUserIdAndProductId(params: FindCartByUserIdAndProductIdParams): Promise<CartItem | null>
 }

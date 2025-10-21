@@ -37,13 +37,13 @@ export const createCartUseCase = async (
     throw new Error('insufficient stock for product')
   }
 
-  const cartItem = await cartRepository.findCartByUserIdAndProductId({
+  const cartItem = await cartRepository.findCartItemByUserIdAndProductId({
     userId: input.userId,
     productId: input.productId,
   })
 
   if (cartItem) {
-    await cartRepository.updateCart({
+    await cartRepository.updateCartItem({
       cartItemId: cartItem.id,
       quantity: cartItem.quantity + input.quantity,
     })

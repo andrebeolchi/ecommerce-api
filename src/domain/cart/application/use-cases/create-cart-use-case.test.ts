@@ -30,16 +30,16 @@ describe('[use-case] create cart', () => {
   it('should update quantity if cart item already exists', async () => {
     const user = userFactory.build()
     const product = productFactory.build()
-    const cartItem = cartItemFactory.build({ productId: product.id })
+    const cartItem = cartItemFactory.build({ productId: product.id, quantity: 2 })
 
     jest.spyOn(productRepository, 'findById').mockResolvedValueOnce(product)
-    jest.spyOn(cartRepository, 'findCartByUserIdAndProductId').mockResolvedValueOnce(cartItem)
+    jest.spyOn(cartRepository, 'findCartItemByUserIdAndProductId').mockResolvedValueOnce(cartItem)
 
     const result = createCartUseCase(
       {
         userId: user.id,
         productId: cartItem.productId,
-        quantity: cartItem.quantity,
+        quantity: 3,
       },
       {
         logger,
@@ -57,7 +57,7 @@ describe('[use-case] create cart', () => {
     const cartItem = cartItemFactory.build({ productId: product.id })
 
     jest.spyOn(productRepository, 'findById').mockResolvedValueOnce(product)
-    jest.spyOn(cartRepository, 'findCartByUserIdAndProductId').mockResolvedValueOnce(null)
+    jest.spyOn(cartRepository, 'findCartItemByUserIdAndProductId').mockResolvedValueOnce(null)
 
     const result = createCartUseCase(
       {
