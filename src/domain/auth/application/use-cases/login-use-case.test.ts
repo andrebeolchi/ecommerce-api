@@ -1,53 +1,39 @@
+import { MockProxy, mock } from 'jest-mock-extended'
+
 import { JwtProvider } from '~/domain/auth/application/repositories/jwt-provider'
 import { PasswordHasher } from '~/domain/auth/application/repositories/password-hasher'
 import { UserRepository } from '~/domain/auth/application/repositories/user-repository'
 
-import { mockUserRepository } from '~/adapters/gateways/database/auth/mock-user-repository'
-
 import { userFactory } from '~/infra/fixtures'
-import { mockJwtProvider } from '~/infra/jwt-provider/mock'
 import { Logger } from '~/infra/logger'
-import { mockLogger } from '~/infra/logger/mock'
-import { mockPasswordHasher } from '~/infra/password-hasher/mock'
 
-import { loginUseCase } from './login-use-case'
+import { LoginUseCase } from './login-use-case'
 
 describe('[use-case] login user', () => {
-  let userRepository: UserRepository
-  let passwordHasher: PasswordHasher
-  let jwtProvider: JwtProvider
-  let logger: Logger
+  let loginUseCase: LoginUseCase
+
+  let userRepository: MockProxy<UserRepository>
+  let passwordHasher: MockProxy<PasswordHasher>
+  let jwtProvider: MockProxy<JwtProvider>
+  let logger: MockProxy<Logger>
 
   beforeEach(() => {
-    userRepository = mockUserRepository
-    passwordHasher = mockPasswordHasher
-    logger = mockLogger
-    jwtProvider = mockJwtProvider
-  })
+    userRepository = mock<UserRepository>()
+    passwordHasher = mock<PasswordHasher>()
+    jwtProvider = mock<JwtProvider>()
+    logger = mock<Logger>()
 
-  afterEach(() => {
-    userRepository = {} as UserRepository
-    passwordHasher = {} as PasswordHasher
-    logger = {} as Logger
-    jwtProvider = {} as JwtProvider
+    loginUseCase = new LoginUseCase(logger, userRepository, passwordHasher, jwtProvider)
   })
 
   it('should log in a user successfully', async () => {
     const user = userFactory.build()
 
-    jest.spyOn(userRepository, 'findByEmail').mockResolvedValueOnce(user)
-    jest.spyOn(passwordHasher, 'compare').mockResolvedValueOnce(true)
-    jest.spyOn(jwtProvider, 'generateToken').mockReturnValueOnce('valid-jwt-token')
+    userRepository.findByEmail.mockResolvedValueOnce(user)
+    passwordHasher.compare.mockResolvedValueOnce(true)
+    jwtProvider.generateToken.mockReturnValueOnce('valid-jwt-token')
 
-    const result = loginUseCase(
-      { email: user.email, password: user.password },
-      {
-        logger,
-        userRepository,
-        passwordHasher,
-        jwtProvider,
-      }
-    )
+    const result = loginUseCase.execute({ email: user.email, password: user.password })
 
     await expect(result).resolves.toEqual({ token: 'valid-jwt-token' })
   })
@@ -55,17 +41,9 @@ describe('[use-case] login user', () => {
   it('should throw error if user not found', async () => {
     const user = userFactory.build()
 
-    jest.spyOn(userRepository, 'findByEmail').mockResolvedValueOnce(null)
+    userRepository.findByEmail.mockResolvedValueOnce(null)
 
-    const result = loginUseCase(
-      { email: user.email, password: user.password },
-      {
-        logger,
-        userRepository,
-        passwordHasher,
-        jwtProvider,
-      }
-    )
+    const result = loginUseCase.execute({ email: user.email, password: user.password })
 
     await expect(result).rejects.toThrow('invalid credentials')
   })
@@ -73,18 +51,10 @@ describe('[use-case] login user', () => {
   it('should throw error if password is invalid', async () => {
     const user = userFactory.build()
 
-    jest.spyOn(userRepository, 'findByEmail').mockResolvedValueOnce(user)
-    jest.spyOn(passwordHasher, 'compare').mockResolvedValueOnce(false)
+    userRepository.findByEmail.mockResolvedValueOnce(user)
+    passwordHasher.compare.mockResolvedValueOnce(false)
 
-    const result = loginUseCase(
-      { email: user.email, password: 'wrong-password' },
-      {
-        logger,
-        userRepository,
-        passwordHasher,
-        jwtProvider,
-      }
-    )
+    const result = loginUseCase.execute({ email: user.email, password: 'wrong-password' })
 
     await expect(result).rejects.toThrow('invalid credentials')
   })

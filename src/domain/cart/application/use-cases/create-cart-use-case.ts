@@ -11,50 +11,49 @@ interface CreateCartUseCaseInput {
   quantity: number
 }
 
-interface CreateCartUseCaseDependencies {
-  logger: Logger
-  cartRepository: CartRepository
-  productRepository: ProductRepository
-}
+export class CreateCartUseCase {
+  constructor(
+    private logger: Logger,
+    private cartRepository: CartRepository,
+    private productRepository: ProductRepository
+  ) {}
 
-export const createCartUseCase = async (
-  input: CreateCartUseCaseInput,
-  { logger, cartRepository, productRepository }: CreateCartUseCaseDependencies
-) => {
-  const product = await productRepository.findById(input.productId)
+  async execute(input: CreateCartUseCaseInput) {
+    const product = await this.productRepository.findById(input.productId)
 
-  if (!product) {
-    logger.error('product not found', { productId: input.productId })
-    throw new NotFoundError('product not found')
-  }
+    if (!product) {
+      this.logger.error('product not found', { productId: input.productId })
+      throw new NotFoundError('product not found')
+    }
 
-  if (product.stock < input.quantity) {
-    logger.error('insufficient stock for product', {
+    if (product.stock < input.quantity) {
+      this.logger.error('insufficient stock for product', {
+        productId: input.productId,
+        requestedQuantity: input.quantity,
+        availableStock: product.stock,
+      })
+      throw new Error('insufficient stock for product')
+    }
+
+    const cartItem = await this.cartRepository.findCartItemByUserIdAndProductId({
+      userId: input.userId,
       productId: input.productId,
-      requestedQuantity: input.quantity,
-      availableStock: product.stock,
     })
-    throw new Error('insufficient stock for product')
-  }
 
-  const cartItem = await cartRepository.findCartItemByUserIdAndProductId({
-    userId: input.userId,
-    productId: input.productId,
-  })
+    if (cartItem) {
+      await this.cartRepository.updateCartItem({
+        cartItemId: cartItem.id,
+        quantity: cartItem.quantity + input.quantity,
+      })
+      return
+    }
 
-  if (cartItem) {
-    await cartRepository.updateCartItem({
-      cartItemId: cartItem.id,
-      quantity: cartItem.quantity + input.quantity,
+    await this.cartRepository.createCart({
+      userId: input.userId,
+      productId: input.productId,
+      quantity: input.quantity,
+      name: product.name,
+      price: product.price,
     })
-    return
   }
-
-  await cartRepository.createCart({
-    userId: input.userId,
-    productId: input.productId,
-    quantity: input.quantity,
-    name: product.name,
-    price: product.price,
-  })
 }

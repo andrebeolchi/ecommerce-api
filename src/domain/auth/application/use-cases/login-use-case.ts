@@ -9,41 +9,40 @@ interface LoginInput {
   password: string
 }
 
-interface LoginDependencies {
-  logger: Logger
-  userRepository: UserRepository
-  passwordHasher: PasswordHasher
-  jwtProvider: JwtProvider
-}
+export class LoginUseCase {
+  constructor(
+    private logger: Logger,
+    private userRepository: UserRepository,
+    private passwordHasher: PasswordHasher,
+    private jwtProvider: JwtProvider
+  ) {}
 
-export const loginUseCase = async (
-  input: LoginInput,
-  { logger, userRepository, passwordHasher, jwtProvider }: LoginDependencies
-) => {
-  try {
-    logger.info('logging in user', { email: input.email })
+  async execute(input: LoginInput) {
+    try {
+      this.logger.info('logging in user', { email: input.email })
 
-    const user = await userRepository.findByEmail(input.email)
+      const user = await this.userRepository.findByEmail(input.email)
 
-    if (!user) {
-      logger.warn('user not found', { email: input.email })
-      throw new Error('invalid credentials')
+      if (!user) {
+        this.logger.warn('user not found', { email: input.email })
+        throw new Error('invalid credentials')
+      }
+
+      const isPasswordValid = await this.passwordHasher.compare(input.password, user.password)
+
+      if (!isPasswordValid) {
+        this.logger.warn('invalid password attempt', { email: input.email })
+        throw new Error('invalid credentials')
+      }
+
+      const token = this.jwtProvider.generateToken({ userId: user.id, email: user.email })
+
+      this.logger.info('user logged in successfully', { userId: user.id })
+
+      return { token }
+    } catch (error) {
+      this.logger.error('error logging in user', { error })
+      throw error
     }
-
-    const isPasswordValid = await passwordHasher.compare(input.password, user.password)
-
-    if (!isPasswordValid) {
-      logger.warn('invalid password attempt', { email: input.email })
-      throw new Error('invalid credentials')
-    }
-
-    const token = jwtProvider.generateToken({ userId: user.id, email: user.email })
-
-    logger.info('user logged in successfully', { userId: user.id })
-
-    return { token }
-  } catch (error) {
-    logger.error('error logging in user', { error })
-    throw error
   }
 }

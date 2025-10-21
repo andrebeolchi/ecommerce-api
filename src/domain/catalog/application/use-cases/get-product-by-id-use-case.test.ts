@@ -1,36 +1,31 @@
-import { ProductRepository } from '~/domain/catalog/application/repositories/product-repository'
+import { mock, MockProxy } from 'jest-mock-extended'
 
-import { mockProductRepository } from '~/adapters/gateways/database/auth/mock-product-repository'
+import { ProductRepository } from '~/domain/catalog/application/repositories/product-repository'
 
 import { productFactory } from '~/infra/fixtures'
 import { Logger } from '~/infra/logger'
-import { mockLogger } from '~/infra/logger/mock'
 
-import { getProductByIdUseCase } from './get-product-by-id-use-case'
+import { GetProductByIdUseCase } from './get-product-by-id-use-case'
 
 describe('[use-case] get product by id', () => {
-  let productRepository: ProductRepository
-  let logger: Logger
+  let getProductByIdUseCase: GetProductByIdUseCase
+
+  let productRepository: MockProxy<ProductRepository>
+  let logger: MockProxy<Logger>
 
   beforeEach(() => {
-    productRepository = mockProductRepository
-    logger = mockLogger
-  })
+    productRepository = mock<ProductRepository>()
+    logger = mock<Logger>()
 
-  afterEach(() => {
-    productRepository = {} as ProductRepository
-    logger = {} as Logger
+    getProductByIdUseCase = new GetProductByIdUseCase(logger, productRepository)
   })
 
   it('should return product when found', async () => {
     const product = productFactory.build()
 
-    jest.spyOn(productRepository, 'findById').mockResolvedValueOnce(product)
+    productRepository.findById.mockResolvedValueOnce(product)
 
-    const result = getProductByIdUseCase(product.id, {
-      logger,
-      productRepository,
-    })
+    const result = getProductByIdUseCase.execute(product.id)
 
     await expect(result).resolves.toEqual(product)
   })
@@ -38,12 +33,9 @@ describe('[use-case] get product by id', () => {
   it('should throw error when product not found', async () => {
     const productId = 'non-existent-id'
 
-    jest.spyOn(productRepository, 'findById').mockResolvedValueOnce(null)
+    productRepository.findById.mockResolvedValueOnce(null)
 
-    const result = getProductByIdUseCase(productId, {
-      logger,
-      productRepository,
-    })
+    const result = getProductByIdUseCase.execute(productId)
 
     await expect(result).rejects.toThrow('product not found')
   })

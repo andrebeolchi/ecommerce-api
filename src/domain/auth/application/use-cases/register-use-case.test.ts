@@ -1,60 +1,51 @@
+import { mock, MockProxy } from 'jest-mock-extended'
+
 import { PasswordHasher } from '~/domain/auth/application/repositories/password-hasher'
 import { UserRepository } from '~/domain/auth/application/repositories/user-repository'
 
-import { mockUserRepository } from '~/adapters/gateways/database/auth/mock-user-repository'
-
 import { userFactory } from '~/infra/fixtures'
 import { Logger } from '~/infra/logger'
-import { mockLogger } from '~/infra/logger/mock'
-import { mockPasswordHasher } from '~/infra/password-hasher/mock'
 
-import { registerUseCase } from './register-use-case'
+import { RegisterUseCase } from './register-use-case'
 
 describe('[use-case] register user', () => {
-  let userRepository: UserRepository
-  let passwordHasher: PasswordHasher
-  let logger: Logger
+  let registerUseCase: RegisterUseCase
+
+  let userRepository: MockProxy<UserRepository>
+  let passwordHasher: MockProxy<PasswordHasher>
+  let logger: MockProxy<Logger>
 
   beforeEach(() => {
-    userRepository = mockUserRepository
-    passwordHasher = mockPasswordHasher
-    logger = mockLogger
-  })
+    logger = mock<Logger>()
+    passwordHasher = mock<PasswordHasher>()
+    userRepository = mock<UserRepository>()
 
-  afterEach(() => {
-    userRepository = {} as UserRepository
-    passwordHasher = {} as PasswordHasher
-    logger = {} as Logger
+    registerUseCase = new RegisterUseCase(logger, userRepository, passwordHasher)
   })
 
   it('should create a new user successfully', async () => {
     const { email, password } = userFactory.build()
 
-    const result = registerUseCase(
-      { email, password },
-      {
-        logger,
-        userRepository,
-        passwordHasher,
-      }
-    )
+    userRepository.findByEmail.mockResolvedValueOnce(null)
+    passwordHasher.hash.mockResolvedValueOnce('hashed-password')
+    userRepository.create.mockImplementationOnce(async user => user)
 
-    await expect(result).resolves.toBeUndefined()
+    const result = await registerUseCase.execute({ email, password })
+
+    expect(result).toEqual(
+      expect.objectContaining({
+        email,
+        password: 'hashed-password',
+      })
+    )
   })
 
   it('should not create a user if email already exists', async () => {
     const existingUser = userFactory.build()
 
-    jest.spyOn(userRepository, 'findByEmail').mockResolvedValueOnce(existingUser)
+    userRepository.findByEmail.mockResolvedValueOnce(existingUser)
 
-    const result = registerUseCase(
-      { email: existingUser.email, password: 'any-password' },
-      {
-        logger,
-        userRepository,
-        passwordHasher,
-      }
-    )
+    const result = registerUseCase.execute({ email: existingUser.email, password: 'any-password' })
 
     await expect(result).rejects.toThrow('user already exists')
   })
@@ -62,18 +53,11 @@ describe('[use-case] register user', () => {
   it('should hash the password before storing', async () => {
     const { email, password } = userFactory.build()
 
-    jest.spyOn(passwordHasher, 'hash').mockResolvedValueOnce('hashed-password')
+    userRepository.findByEmail.mockResolvedValueOnce(null)
+    passwordHasher.hash.mockResolvedValueOnce('hashed-password')
+    const createSpy = userRepository.create.mockImplementationOnce(async user => user)
 
-    const createSpy = jest.spyOn(userRepository, 'create')
-
-    await registerUseCase(
-      { email, password },
-      {
-        logger,
-        userRepository,
-        passwordHasher,
-      }
-    )
+    await registerUseCase.execute({ email, password })
 
     expect(createSpy).toHaveBeenCalledWith(
       expect.objectContaining({
