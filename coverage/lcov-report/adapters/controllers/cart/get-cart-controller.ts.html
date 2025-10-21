@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for domain/auth/application/use-cases/verify-token-use-case.ts</title>
+    <title>Code coverage report for adapters/controllers/cart/get-cart-controller.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../../prettify.css" />
-    <link rel="stylesheet" href="../../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../../favicon.png" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../../sort-arrow-sprite.png);
+            background-image: url(../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">domain/auth/application/use-cases</a> verify-token-use-case.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">adapters/controllers/cart</a> get-cart-controller.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">94.44% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>39/39</span>
+                <span class='fraction'>34/36</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">94.44% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>39/39</span>
+                <span class='fraction'>34/36</span>
             </div>
         
             
@@ -99,10 +99,7 @@
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -120,64 +117,58 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { UnauthorizedError } from '~/domain/commons/errors/unauthorized'
-import { ValidationError } from '~/domain/commons/errors/validation'
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { VerifyTokenUseCase } from '~/domain/auth/application/use-cases/verify-token-use-case'
+import { GetCartUseCase } from '~/domain/cart/application/use-cases/get-cart-use-case'
 &nbsp;
-import { User } from '~/domain/auth/entities/user'
+import { errorHandler } from '~/adapters/controllers/interfaces/error-handler'
+import { Request } from '~/adapters/controllers/interfaces/request'
 &nbsp;
-import { JwtProvider } from '~/domain/auth/application/repositories/jwt-provider'
+import { Logger } from '~/infra/logger'
 &nbsp;
-interface JwtTokenPayload {
-  userId: string
-  name: string
-  email: string
-  createdAt: Date
+export interface Headers {
+  authorization: string
 }
 &nbsp;
-export class VerifyTokenUseCase {
-  constructor(private jwtProvider: JwtProvider) {}
+export class GetCartController {
+  constructor(
+    private logger: Logger,
+    private verifyTokenUseCase: VerifyTokenUseCase,
+    private getCartUseCase: GetCartUseCase
+  ) {}
 &nbsp;
-  async execute(token?: string): Promise&lt;User&gt; {
-    if (!token || !token.startsWith('Bearer ')) {
-      throw new ValidationError('invalid token format')
-    }
+  async execute({ headers }: Request&lt;undefined, undefined, Headers&gt;) {
+    try {
+      const user = await this.verifyTokenUseCase.execute(headers!.authorization!)
 &nbsp;
-    const [, value] = token.split(' ')
+      const result = await this.getCartUseCase.execute(user.id)
 &nbsp;
-    const decoded = await this.jwtProvider.verifyToken&lt;JwtTokenPayload&gt;(value)
+      this.logger.info('cart retrieved successfully', { userId: user.id })
 &nbsp;
-    if (!decoded?.userId) {
-      throw new UnauthorizedError('invalid token')
-    }
-&nbsp;
-    return User.create(
-      {
-        email: decoded.email,
-        password: '',
-      },
-      decoded.userId
-    )
+      return {
+        status: 200,
+        body: result,
+      }
+    } <span class="branch-0 cbranch-no" title="branch not covered" >catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >      return errorHandler({ error, logger: this.logger })</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -189,14 +180,14 @@ export class VerifyTokenUseCase {
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
                 at 2025-10-21T21:38:49.465Z
             </div>
-        <script src="../../../../prettify.js"></script>
+        <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../../sorter.js"></script>
-        <script src="../../../../block-navigation.js"></script>
+        <script src="../../../sorter.js"></script>
+        <script src="../../../block-navigation.js"></script>
     </body>
 </html>
     
