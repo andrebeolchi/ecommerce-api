@@ -31,7 +31,7 @@ export default defineConfig([
       semi: ['error', 'never'],
       'prettier/prettier': 'error',
 
-      'no-unused-vars': [
+      '@typescript-eslint/no-unused-vars': [
         'error',
         {
           ignoreRestSiblings: true,
