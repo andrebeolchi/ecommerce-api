@@ -7,7 +7,7 @@ import { SchemaValidator } from '~/adapters/controllers/interfaces/schema-valida
 import { productFactory } from '~/infra/fixtures'
 import { Logger } from '~/infra/logger'
 
-import { GetProductByIdController, Params } from './get-product-by-id'
+import { GetProductByIdController, Params } from './get-product-by-id-controller'
 
 describe('[controller] get product by id', () => {
   const getProductByIdUseCase = mock<GetProductByIdUseCase>()
