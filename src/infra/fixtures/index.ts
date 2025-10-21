@@ -28,20 +28,22 @@ export const productFactory = new Factory<Product>().attrs({
   updatedAt: () => faker.date.recent(),
 })
 
-export const cartFactory = new Factory<Cart>().attrs({
+const productId = faker.string.uuid()
+
+export const cartItemFactory = new Factory<CartItem>().attrs({
   id: () => faker.string.uuid(),
-  userId: () => faker.string.uuid(),
-  items: () => [],
+  productId: () => productId,
+  name: () => faker.commerce.productName(),
+  quantity: () => faker.number.int({ min: 1, max: 10 }),
+  product: () => productFactory.build({ id: productId }),
   createdAt: () => faker.date.past(),
   updatedAt: () => faker.date.recent(),
 })
 
-export const cartItemFactory = new Factory<CartItem>().attrs({
+export const cartFactory = new Factory<Cart>().attrs({
   id: () => faker.string.uuid(),
-  productId: () => faker.string.uuid(),
-  name: () => faker.commerce.productName(),
-  quantity: () => faker.number.int({ min: 1, max: 10 }),
-  price: () => +faker.commerce.price({ min: 800, max: 1000, dec: 2 }),
+  userId: () => faker.string.uuid(),
+  items: () => cartItemFactory.buildList(3),
   createdAt: () => faker.date.past(),
   updatedAt: () => faker.date.recent(),
 })
