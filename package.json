@@ -11,7 +11,8 @@
     "lint": "eslint src/** --no-error-on-unmatched-pattern",
     "lint:fix": "eslint --fix src/** --no-error-on-unmatched-pattern",
     "format": "prettier --write .",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "test:ci": "jest --passWithNoTests --coverage --coverageReporters=json --coverageReporters=lcov --coverageReporters=text"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": "eslint --fix"
@@ -24,6 +25,7 @@
     "@types/jest": "29.5.14",
     "@types/node": "^24.9.0",
     "@types/rosie": "^0.0.45",
+    "codecov": "^3.8.3",
     "eslint": "9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
