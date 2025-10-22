@@ -1,8 +1,10 @@
 import { Entity } from '~/domain/commons/entity'
+import { Optional } from '~/domain/commons/optional'
 
 import { Product } from '~/domain/catalog/entities/product'
 
 interface CartItemProps {
+  cartId: string
   productId: string
   quantity: number
   product: Product
@@ -11,12 +13,12 @@ interface CartItemProps {
 }
 
 export class CartItem extends Entity<CartItemProps> {
-  static create(props: Omit<CartItemProps, 'createdAt' | 'updatedAt'>, id?: string) {
+  static create(props: Optional<CartItemProps, 'createdAt' | 'updatedAt'>, id?: string) {
     const cartItem = new CartItem(
       {
         ...props,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: props?.createdAt ?? new Date(),
+        updatedAt: props?.updatedAt ?? new Date(),
       },
       id
     )
@@ -24,6 +26,10 @@ export class CartItem extends Entity<CartItemProps> {
   }
 
   get productId(): string {
+    return this.props.productId
+  }
+
+  get cartId(): string {
     return this.props.productId
   }
 

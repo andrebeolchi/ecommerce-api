@@ -1,4 +1,5 @@
 import { Entity } from '~/domain/commons/entity'
+import { Optional } from '~/domain/commons/optional'
 
 import { CartItem } from './cart-item'
 
@@ -10,12 +11,12 @@ interface CartProps {
 }
 
 export class Cart extends Entity<CartProps> {
-  static create(props: Omit<CartProps, 'createdAt' | 'updatedAt'>, id?: string) {
+  static create(props: Optional<CartProps, 'createdAt' | 'updatedAt'>, id?: string) {
     const cart = new Cart(
       {
         ...props,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: props?.createdAt ?? new Date(),
+        updatedAt: props?.updatedAt ?? new Date(),
       },
       id
     )

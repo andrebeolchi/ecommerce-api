@@ -1,6 +1,7 @@
 import { NotFoundError } from '~/domain/commons/errors/not-found'
 import { ValidationError } from '~/domain/commons/errors/validation'
 
+import { Cart } from '~/domain/cart/entities/cart'
 import { CartItem } from '~/domain/cart/entities/cart-item'
 
 import { CartRepository } from '~/domain/cart/application/repositories/cart-repository'
@@ -33,7 +34,12 @@ export class AddToCartUseCase {
 
     if (!cart) {
       this.logger.info(`creating new cart for user`, { userId })
-      cart = await this.cartRepository.createCart(userId)
+      cart = await this.cartRepository.createCart(
+        Cart.create({
+          userId,
+          items: [],
+        })
+      )
     }
 
     const existingCartItem = await this.cartRepository.findCartItemByUserIdAndProductId({
@@ -52,26 +58,27 @@ export class AddToCartUseCase {
 
     if (!existingCartItem) {
       this.logger.info(`adding new product to cart`, { userId, productId, quantity })
-      return this.cartRepository.createCartItem({
-        userId,
-        productId,
+
+      const cartItem = CartItem.create({
+        productId: product.id,
         quantity,
+        cartId: cart.id,
+        product,
       })
+
+      return this.cartRepository.createCartItem(cartItem)
     }
 
     const cartItem = CartItem.create(
       {
         productId: existingCartItem.productId,
-        name: existingCartItem.name,
+        cartId: existingCartItem.cartId,
         quantity,
         product: existingCartItem.product,
       },
       existingCartItem.id
     )
 
-    return this.cartRepository.updateCartItem({
-      cartItemId: cartItem.id,
-      quantity: cartItem.quantity,
-    })
+    return this.cartRepository.updateCartItem(cartItem)
   }
 }
