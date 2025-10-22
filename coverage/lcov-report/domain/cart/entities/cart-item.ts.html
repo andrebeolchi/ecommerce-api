@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.59% </span>
+                <span class="strong">74.54% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>39/49</span>
+                <span class='fraction'>41/55</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">20% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>1/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">28.57% </span>
+                <span class="strong">12.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/7</span>
+                <span class='fraction'>1/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.59% </span>
+                <span class="strong">74.54% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>39/49</span>
+                <span class='fraction'>41/55</span>
             </div>
         
             
@@ -112,7 +112,13 @@
 <a name='L47'></a><a href='#L47'>47</a>
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -128,14 +134,16 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -146,8 +154,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -162,10 +174,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Entity } from '~/domain/commons/entity'
+import { Optional } from '~/domain/commons/optional'
 &nbsp;
 import { Product } from '~/domain/catalog/entities/product'
 &nbsp;
 interface CartItemProps {
+  cartId: string
   productId: string
   quantity: number
   product: Product
@@ -174,12 +188,12 @@ interface CartItemProps {
 }
 &nbsp;
 export class CartItem extends Entity&lt;CartItemProps&gt; {
-  static create(props: Omit&lt;CartItemProps, 'createdAt' | 'updatedAt'&gt;, id?: string) {
+  static create(props: Optional&lt;CartItemProps, 'createdAt' | 'updatedAt'&gt;, id?: string) {
     const cartItem = new CartItem(
       {
         ...props,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: props<span class="branch-0 cbranch-no" title="branch not covered" >?.c</span>reatedAt<span class="branch-0 cbranch-no" title="branch not covered" > ?? n</span>ew Date(),
+        updatedAt: props<span class="branch-0 cbranch-no" title="branch not covered" >?.u</span>pdatedAt<span class="branch-0 cbranch-no" title="branch not covered" > ?? n</span>ew Date(),
       },
       id
     )
@@ -190,13 +204,17 @@ export class CartItem extends Entity&lt;CartItemProps&gt; {
 <span class="cstat-no" title="statement not covered" >    return this.props.productId</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
+<span class="fstat-no" title="function not covered" >  get cartId(): string {</span>
+<span class="cstat-no" title="statement not covered" >    return this.props.productId</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+&nbsp;
 <span class="fstat-no" title="function not covered" >  get name(): string {</span>
 <span class="cstat-no" title="statement not covered" >    return this.props.product.name</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
-  get quantity(): number {
-    return this.props.quantity
-  }
+<span class="fstat-no" title="function not covered" >  get quantity(): number {</span>
+<span class="cstat-no" title="statement not covered" >    return this.props.quantity</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >  get product(): Product {</span>
 <span class="cstat-no" title="statement not covered" >    return this.props.product</span>
@@ -217,7 +235,7 @@ export class CartItem extends Entity&lt;CartItemProps&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-22T03:44:13.200Z
+                at 2025-10-22T14:45:16.295Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
