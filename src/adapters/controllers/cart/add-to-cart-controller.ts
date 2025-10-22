@@ -5,6 +5,8 @@ import { errorHandler } from '~/adapters/controllers/interfaces/error-handler'
 import { Request } from '~/adapters/controllers/interfaces/request'
 import { SchemaValidator } from '~/adapters/controllers/interfaces/schema-validator'
 
+import { CartItemPresenter } from '~/adapters/presenters/cart-item'
+
 import { Logger } from '~/infra/logger'
 
 export interface Body {
@@ -52,7 +54,7 @@ export class AddToCartController {
 
       return {
         status: 200,
-        body: result,
+        body: CartItemPresenter.toJSON(result),
       }
     } catch (error) {
       return errorHandler({ error, logger: this.logger })

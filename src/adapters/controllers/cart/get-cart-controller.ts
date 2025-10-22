@@ -4,6 +4,8 @@ import { GetCartUseCase } from '~/domain/cart/application/use-cases/get-cart-use
 import { errorHandler } from '~/adapters/controllers/interfaces/error-handler'
 import { Request } from '~/adapters/controllers/interfaces/request'
 
+import { CartPresenter } from '~/adapters/presenters/cart'
+
 import { Logger } from '~/infra/logger'
 
 export interface Headers {
@@ -27,7 +29,7 @@ export class GetCartController {
 
       return {
         status: 200,
-        body: result,
+        body: CartPresenter.toJSON(result),
       }
     } catch (error) {
       return errorHandler({ error, logger: this.logger })

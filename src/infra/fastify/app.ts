@@ -4,6 +4,7 @@ import { config } from '~/infra/config'
 
 import { fastifyErrorHandler } from './error-handler'
 import { authRoutes } from './routes/auth'
+import { cartRoutes } from './routes/cart'
 import { catalogRoutes } from './routes/catalog'
 import { healthCheckRoute } from './routes/health-check'
 
@@ -28,5 +29,6 @@ export const app = fastify({
 app.register(healthCheckRoute)
 app.register(authRoutes)
 app.register(catalogRoutes)
+app.register(cartRoutes)
 
 app.setErrorHandler(fastifyErrorHandler)

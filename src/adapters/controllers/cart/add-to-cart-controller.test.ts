@@ -5,6 +5,8 @@ import { AddToCartUseCase } from '~/domain/cart/application/use-cases/add-to-car
 
 import { SchemaValidator } from '~/adapters/controllers/interfaces/schema-validator'
 
+import { CartItemPresenter } from '~/adapters/presenters/cart-item'
+
 import { cartItemFactory, productFactory, userFactory } from '~/infra/fixtures'
 import { Logger } from '~/infra/logger'
 
@@ -44,6 +46,6 @@ describe('[controller] add to cart', () => {
     })
 
     expect(result.status).toBe(200)
-    expect(result.body).toEqual(newCartItem)
+    expect(result.body).toEqual(CartItemPresenter.toJSON(newCartItem))
   })
 })

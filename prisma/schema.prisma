@@ -52,6 +52,9 @@ model Cart {
 
   createdAt DateTime @map("created_at")
   updatedAt DateTime @map("updated_at")
+
+  @@unique([id, userId])
+  @@index([userId])
 }
 
 model CartItem {
@@ -66,4 +69,7 @@ model CartItem {
 
   createdAt DateTime @map("created_at")
   updatedAt DateTime @map("updated_at")
+
+  @@unique([cartId, productId])
+  @@index([cartId])
 }

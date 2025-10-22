@@ -3,6 +3,8 @@ import { mock } from 'jest-mock-extended'
 import { VerifyTokenUseCase } from '~/domain/auth/application/use-cases/verify-token-use-case'
 import { GetCartUseCase } from '~/domain/cart/application/use-cases/get-cart-use-case'
 
+import { CartPresenter } from '~/adapters/presenters/cart'
+
 import { cartFactory, userFactory } from '~/infra/fixtures'
 import { Logger } from '~/infra/logger'
 
@@ -33,6 +35,6 @@ describe('[controller] get cart', () => {
     })
 
     expect(result.status).toBe(200)
-    expect(result.body).toEqual(cartData)
+    expect(result.body).toEqual(CartPresenter.toJSON(cartData))
   })
 })
