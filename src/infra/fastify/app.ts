@@ -2,7 +2,9 @@ import fastify from 'fastify'
 
 import { config } from '~/infra/config'
 
+import { fastifyErrorHandler } from './error-handler'
 import { authRoutes } from './routes/auth'
+import { catalogRoutes } from './routes/catalog'
 import { healthCheckRoute } from './routes/health-check'
 
 const envToLogger = {
@@ -25,3 +27,6 @@ export const app = fastify({
 
 app.register(healthCheckRoute)
 app.register(authRoutes)
+app.register(catalogRoutes)
+
+app.setErrorHandler(fastifyErrorHandler)

@@ -40,7 +40,14 @@ describe('[controller] register', () => {
     const response = await registerController.execute(request)
 
     expect(response.status).toBe(201)
-    expect(response.body).toEqual(user)
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        id: user.id,
+        email: user.email,
+      })
+    )
+    //@ts-expect-error testing that password is not returned
+    expect(response.body.password).toBeUndefined()
   })
 
   it('should return 400 if validation fails', async () => {

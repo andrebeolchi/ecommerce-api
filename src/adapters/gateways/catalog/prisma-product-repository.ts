@@ -25,7 +25,7 @@ const createProductFromDoc = (doc: PrismaProduct): Product =>
     doc.id
   )
 
-export class PrismaCatalogRepository implements ProductRepository {
+export class PrismaProductRepository implements ProductRepository {
   constructor(private logger: Logger) {}
 
   async findById(productId: string): Promise<Product | null> {

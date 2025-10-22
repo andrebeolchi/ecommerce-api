@@ -4,6 +4,8 @@ import { errorHandler } from '~/adapters/controllers/interfaces/error-handler'
 import { Request } from '~/adapters/controllers/interfaces/request'
 import { SchemaValidator } from '~/adapters/controllers/interfaces/schema-validator'
 
+import { ProductPresenter } from '~/adapters/presenters/product'
+
 import { Logger } from '~/infra/logger'
 
 export interface Params {
@@ -32,7 +34,7 @@ export class GetProductByIdController {
 
       return {
         status: 200,
-        body: result,
+        body: ProductPresenter.toJSON(result),
       }
     } catch (error) {
       return errorHandler({ error, logger: this.logger })

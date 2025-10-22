@@ -2,6 +2,8 @@ import { GetProductsUseCase } from '~/domain/catalog/application/use-cases/get-p
 
 import { errorHandler } from '~/adapters/controllers/interfaces/error-handler'
 
+import { ProductPresenter } from '~/adapters/presenters/product'
+
 import { Logger } from '~/infra/logger'
 
 export class GetProductsController {
@@ -16,7 +18,7 @@ export class GetProductsController {
 
       return {
         status: 200,
-        body: result,
+        body: result.map(product => ProductPresenter.toJSON(product)),
       }
     } catch (error) {
       return errorHandler({ error, logger: this.logger })

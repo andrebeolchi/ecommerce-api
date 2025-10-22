@@ -1,7 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 
-import { User } from '~/domain/auth/entities/user'
-
 import { RegisterUseCase } from '~/domain/auth/application/use-cases/register-use-case'
 
 import { RegisterController } from '~/adapters/controllers/auth/register-controller'
@@ -29,16 +27,6 @@ export async function register(req: FastifyRequest, reply: FastifyReply) {
   const { body, status } = await registerController.execute({
     body: req.body as RegisterSchema,
   })
-
-  if (body instanceof User) {
-    //TODO - should be a presenter
-    return reply.status(status).send({
-      id: body.id,
-      email: body.email,
-      createdAt: body.createdAt,
-      updatedAt: body.updatedAt,
-    })
-  }
 
   return reply.status(status).send(body)
 }

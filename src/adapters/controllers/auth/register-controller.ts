@@ -4,6 +4,8 @@ import { errorHandler } from '~/adapters/controllers/interfaces/error-handler'
 import { Request } from '~/adapters/controllers/interfaces/request'
 import { SchemaValidator } from '~/adapters/controllers/interfaces/schema-validator'
 
+import { UserPresenter } from '~/adapters/presenters/user'
+
 import { Logger } from '~/infra/logger'
 
 export interface Body {
@@ -33,7 +35,7 @@ export class RegisterController {
 
       return {
         status: 201,
-        body: result,
+        body: UserPresenter.toJSON(result),
       }
     } catch (error) {
       return errorHandler({ error, logger: this.logger })
