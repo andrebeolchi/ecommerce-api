@@ -1,3 +1,5 @@
+import { ValidationError } from '~/domain/commons/errors/validation'
+
 import { JwtProvider } from '~/domain/auth/application/repositories/jwt-provider'
 import { PasswordHasher } from '~/domain/auth/application/repositories/password-hasher'
 import { UserRepository } from '~/domain/auth/application/repositories/user-repository'
@@ -25,14 +27,14 @@ export class LoginUseCase {
 
       if (!user) {
         this.logger.warn('user not found', { email: input.email })
-        throw new Error('invalid credentials')
+        throw new ValidationError('invalid credentials')
       }
 
       const isPasswordValid = await this.passwordHasher.compare(input.password, user.password)
 
       if (!isPasswordValid) {
         this.logger.warn('invalid password attempt', { email: input.email })
-        throw new Error('invalid credentials')
+        throw new ValidationError('invalid credentials')
       }
 
       const token = await this.jwtProvider.generateToken({ userId: user.id, email: user.email })

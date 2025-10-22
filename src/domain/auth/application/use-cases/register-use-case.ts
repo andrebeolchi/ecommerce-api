@@ -1,3 +1,5 @@
+import { ConflictError } from '~/domain/commons/errors/conflict'
+
 import { User } from '~/domain/auth/entities/user'
 
 import { PasswordHasher } from '~/domain/auth/application/repositories/password-hasher'
@@ -25,7 +27,7 @@ export class RegisterUseCase {
 
       if (existingUser) {
         this.logger.warn('user already exists', { email: input.email })
-        throw new Error('user already exists')
+        throw new ConflictError('user already exists')
       }
 
       const hashedPassword = await this.passwordHasher.hash(input.password)
