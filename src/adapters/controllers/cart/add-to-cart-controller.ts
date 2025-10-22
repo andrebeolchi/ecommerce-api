@@ -1,9 +1,11 @@
-import { VerifyTokenUseCase } from "~/domain/auth/application/use-cases/verify-token-use-case";
-import { AddToCartUseCase } from "~/domain/cart/application/use-cases/add-to-cart-use-case";
-import { Logger } from "~/infra/logger";
-import { Request } from "~/adapters/controllers/interfaces/request";
-import { SchemaValidator } from "~/adapters/controllers/interfaces/schema-validator";
-import { errorHandler } from "~/adapters/controllers/interfaces/error-handler";
+import { VerifyTokenUseCase } from '~/domain/auth/application/use-cases/verify-token-use-case'
+import { AddToCartUseCase } from '~/domain/cart/application/use-cases/add-to-cart-use-case'
+
+import { errorHandler } from '~/adapters/controllers/interfaces/error-handler'
+import { Request } from '~/adapters/controllers/interfaces/request'
+import { SchemaValidator } from '~/adapters/controllers/interfaces/schema-validator'
+
+import { Logger } from '~/infra/logger'
 
 export interface Body {
   productId: string
@@ -19,12 +21,12 @@ export class AddToCartController {
     private logger: Logger,
     private verifyTokenUseCase: VerifyTokenUseCase,
     private addToCartUseCase: AddToCartUseCase,
-    private schemaValidator: SchemaValidator<Body>,
-  ) { }
+    private schemaValidator: SchemaValidator<Body>
+  ) {}
 
   async execute({ body, headers }: Request<Body, undefined, Headers>) {
     try {
-      const user = await this.verifyTokenUseCase.execute(headers?.authorization!)
+      const user = await this.verifyTokenUseCase.execute(headers!.authorization!)
 
       const { data, errors } = this.schemaValidator.execute(body!)
 
@@ -42,7 +44,11 @@ export class AddToCartController {
         quantity: data.quantity,
       })
 
-      this.logger.info('product added to cart successfully', { userId: user.id, productId: data.productId, quantity: data.quantity })
+      this.logger.info('product added to cart successfully', {
+        userId: user.id,
+        productId: data.productId,
+        quantity: data.quantity,
+      })
 
       return {
         status: 200,

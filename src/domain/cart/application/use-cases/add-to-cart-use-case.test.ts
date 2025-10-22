@@ -1,10 +1,12 @@
 import { mock, MockProxy } from 'jest-mock-extended'
 
-import { AddToCartUseCase } from './add-to-cart-use-case'
 import { CartRepository } from '~/domain/cart/application/repositories/cart-repository'
-import { Logger } from '~/infra/logger'
 import { ProductRepository } from '~/domain/catalog/application/repositories/product-repository'
+
 import { cartFactory, cartItemFactory, productFactory, userFactory } from '~/infra/fixtures'
+import { Logger } from '~/infra/logger'
+
+import { AddToCartUseCase } from './add-to-cart-use-case'
 
 describe('[use-case] add to cart', () => {
   let logger: MockProxy<Logger>
@@ -17,11 +19,7 @@ describe('[use-case] add to cart', () => {
     productRepository = mock<ProductRepository>()
     cartRepository = mock<CartRepository>()
 
-    addToCartUseCase = new AddToCartUseCase(
-      logger,
-      productRepository,
-      cartRepository,
-    )
+    addToCartUseCase = new AddToCartUseCase(logger, productRepository, cartRepository)
   })
 
   it('should create cart item if cart does not exist', async () => {
@@ -44,7 +42,7 @@ describe('[use-case] add to cart', () => {
 
     expect(result).toEqual(newCartItem)
   })
-  
+
   it('should create cart item if cart exists', async () => {
     const user = userFactory.build()
     const product = productFactory.build({ stock: 10 })

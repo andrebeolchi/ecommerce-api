@@ -4,7 +4,6 @@ import { Product } from '~/domain/catalog/entities/product'
 
 interface CartItemProps {
   productId: string
-  name: string
   quantity: number
   product: Product
   createdAt: Date
@@ -29,7 +28,7 @@ export class CartItem extends Entity<CartItemProps> {
   }
 
   get name(): string {
-    return this.props.name
+    return this.props.product.name
   }
 
   get quantity(): number {

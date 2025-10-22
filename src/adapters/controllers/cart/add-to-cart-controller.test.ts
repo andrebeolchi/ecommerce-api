@@ -1,10 +1,14 @@
-import { mock } from "jest-mock-extended"
-import { VerifyTokenUseCase } from "~/domain/auth/application/use-cases/verify-token-use-case"
-import { AddToCartUseCase } from "~/domain/cart/application/use-cases/add-to-cart-use-case"
-import { Logger } from "~/infra/logger"
-import { SchemaValidator } from "~/adapters/controllers/interfaces/schema-validator"
-import { AddToCartController, Body } from "./add-to-cart-controller"
-import { cartItemFactory, productFactory, userFactory } from "~/infra/fixtures"
+import { mock } from 'jest-mock-extended'
+
+import { VerifyTokenUseCase } from '~/domain/auth/application/use-cases/verify-token-use-case'
+import { AddToCartUseCase } from '~/domain/cart/application/use-cases/add-to-cart-use-case'
+
+import { SchemaValidator } from '~/adapters/controllers/interfaces/schema-validator'
+
+import { cartItemFactory, productFactory, userFactory } from '~/infra/fixtures'
+import { Logger } from '~/infra/logger'
+
+import { AddToCartController, Body } from './add-to-cart-controller'
 
 describe('[controller] add to cart', () => {
   const logger = mock<Logger>()
@@ -12,12 +16,7 @@ describe('[controller] add to cart', () => {
   const addToCartUseCase = mock<AddToCartUseCase>()
   const schemaValidator = mock<SchemaValidator<Body>>()
 
-  const addToCartController = new AddToCartController(
-    logger,
-    verifyTokenUseCase,
-    addToCartUseCase,
-    schemaValidator
-  )
+  const addToCartController = new AddToCartController(logger, verifyTokenUseCase, addToCartUseCase, schemaValidator)
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -41,7 +40,7 @@ describe('[controller] add to cart', () => {
       body,
       headers: {
         authorization: 'Bearer valid-token',
-      }
+      },
     })
 
     expect(result.status).toBe(200)

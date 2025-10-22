@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -- Auth -- \\
+model User {
+  id       String @id @default(uuid()) @db.Uuid
+  email    String @unique
+  password String
+
+  cart Cart?
+
+  createdAt DateTime @map("created_at")
+  updatedAt DateTime @map("updated_at")
+}
+
+// -- Catalog -- \\
+
+model Product {
+  id          String @id @default(uuid()) @db.Uuid
+  imageUrl    String @map("image_url")
+  name        String
+  description String
+  price       Float
+  // currency    String @default("BRL") // assuming all prices are in BRL for simplicity
+  stock       Int
+
+  promotionalPrice  Float?    @map("promotional_price")
+  promotionStartsAt DateTime? @map("promotion_starts_at")
+  promotionEndsAt   DateTime? @map("promotion_ends_at")
+
+  cartItems CartItem[]
+
+  createdAt DateTime @map("created_at")
+  updatedAt DateTime @map("updated_at")
+}
+
+// -- Cart -- \\
+
+model Cart {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @unique @map("user_id") @db.Uuid
+
+  user User @relation(fields: [userId], references: [id])
+
+  items CartItem[]
+
+  createdAt DateTime @map("created_at")
+  updatedAt DateTime @map("updated_at")
+}
+
+model CartItem {
+  id        String @id @default(uuid()) @db.Uuid
+  cartId    String @map("cart_id") @db.Uuid
+  productId String @map("product_id") @db.Uuid
+
+  quantity Int
+
+  cart    Cart    @relation(fields: [cartId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @map("created_at")
+  updatedAt DateTime @map("updated_at")
+}

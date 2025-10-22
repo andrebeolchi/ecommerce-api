@@ -18,7 +18,7 @@ export default defineConfig([
     rules: {
       '@typescript-eslint/no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
 
-      "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+      '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
 
       '@typescript-eslint/ban-ts-comment': [
         'error',
