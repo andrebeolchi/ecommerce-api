@@ -6,6 +6,7 @@
   "author": "Andre Beolchi <andregarbini2001@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "dev": "tsx src/infra/fastify/server.ts",
     "prepare": "husky",
     "commitlint:edit": "commitlint --edit",
     "lint": "eslint src/** --no-error-on-unmatched-pattern",
@@ -37,6 +38,7 @@
     "jest-mock-extended": "^4.0.0",
     "jiti": "^2.6.1",
     "lint-staged": "^16.2.5",
+    "pino-pretty": "^13.1.2",
     "prettier": "^3.6.2",
     "prisma": "^6.17.1",
     "rosie": "^2.1.1",
@@ -51,6 +53,9 @@
     "@prisma/client": "^6.17.1",
     "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.3",
-    "jose": "^6.1.0"
+    "fastify": "^5.6.1",
+    "jose": "^6.1.0",
+    "pino": "^10.1.0",
+    "zod": "^4.1.12"
   }
 }

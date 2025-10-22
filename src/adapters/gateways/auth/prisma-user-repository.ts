@@ -19,7 +19,7 @@ const createUserFromDoc = (doc: PrismaUser): User =>
     doc.id
   )
 
-export class PrismaAuthRepository implements UserRepository {
+export class PrismaUserRepository implements UserRepository {
   constructor(private logger: Logger) {}
 
   async findByEmail(email: string): Promise<User | null> {
