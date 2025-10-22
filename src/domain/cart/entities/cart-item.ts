@@ -30,7 +30,7 @@ export class CartItem extends Entity<CartItemProps> {
   }
 
   get cartId(): string {
-    return this.props.productId
+    return this.props.cartId
   }
 
   get name(): string {
