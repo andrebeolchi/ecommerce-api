@@ -14,7 +14,8 @@
     "format": "prettier --write .",
     "test": "jest --passWithNoTests",
     "test:ci": "jest --passWithNoTests --coverage --coverageReporters=json --coverageReporters=lcov --coverageReporters=text",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "db:migrate": "prisma migrate dev"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": "eslint --fix"
