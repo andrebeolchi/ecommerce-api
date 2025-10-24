@@ -35,8 +35,8 @@ Esse projeto é uma API de e-commerce construída seguindo os princípios da Cle
 1. **Clone o repositório**:
 
 ```bash
-git clone https://github.com/andrebeolchi/otp-management.git
-cd otp-management
+git clone https://github.com/andrebeolchi/ecommerce-api.git
+cd ecommerce-api
 ```
 
 2. **Instale as dependências**:
