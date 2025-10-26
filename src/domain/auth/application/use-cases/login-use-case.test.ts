@@ -35,7 +35,13 @@ describe('[use-case] login user', () => {
 
     const result = await loginUseCase.execute({ email: user.email, password: user.password })
 
-    expect(result).toStrictEqual({ token: 'valid-jwt-token' })
+    expect(result).toEqual(
+      expect.objectContaining({
+        token: 'valid-jwt-token',
+        userId: user.id,
+        email: user.email,
+      })
+    )
   })
 
   it('should throw error if user not found', async () => {

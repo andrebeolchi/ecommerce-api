@@ -7,7 +7,6 @@ import { JwtProvider } from '~/domain/auth/application/repositories/jwt-provider
 
 interface JwtTokenPayload {
   userId: string
-  name: string
   email: string
   createdAt: Date
 }

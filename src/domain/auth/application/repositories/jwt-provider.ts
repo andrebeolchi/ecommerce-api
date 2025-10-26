@@ -1,4 +1,9 @@
+export interface JwtTokenPayload {
+  userId: string
+  email: string
+}
+
 export interface JwtProvider {
-  generateToken(payload: Record<string, unknown>): Promise<string>
-  verifyToken<T>(token: string): Promise<T | null>
+  generateToken(payload: JwtTokenPayload): Promise<string>
+  verifyToken(token: string): Promise<JwtTokenPayload | null>
 }

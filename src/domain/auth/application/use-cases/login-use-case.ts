@@ -41,7 +41,7 @@ export class LoginUseCase {
 
       this.logger.info('user logged in successfully', { userId: user.id })
 
-      return { token }
+      return { token, userId: user.id, email: user.email }
     } catch (error) {
       this.logger.error('error logging in user', { error })
       throw error
